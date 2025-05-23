@@ -91,4 +91,43 @@ mod tests {
         warn!(target: "Database", "Warn");
         error!("Error");
     }
+
+    #[test]
+    fn test_multiple_initialization() {
+        OsLogger::new("com.example.oslog")
+            .level_filter(LevelFilter::Trace)
+            .category_level_filter("Settings", LevelFilter::Warn)
+            .category_level_filter("Database", LevelFilter::Error)
+            .category_level_filter("Database", LevelFilter::Trace)
+            .init()
+            .unwrap();
+
+        OsLogger::new("com.example.oslog")
+            .level_filter(LevelFilter::Trace)
+            .category_level_filter("Settings", LevelFilter::Warn)
+            .category_level_filter("Database", LevelFilter::Error)
+            .category_level_filter("Database", LevelFilter::Trace)
+            .init()
+            .unwrap();
+
+        OsLogger::new("com.example.oslog")
+            .level_filter(LevelFilter::Trace)
+            .category_level_filter("Settings", LevelFilter::Warn)
+            .category_level_filter("Database", LevelFilter::Error)
+            .category_level_filter("Database", LevelFilter::Trace)
+            .init()
+            .unwrap();
+
+        // This will not be logged because of its category's custom level filter.
+        info!(target: "Settings", "Info");
+
+        warn!(target: "Settings", "Warn");
+        error!(target: "Settings", "Error");
+
+        trace!("Trace");
+        debug!("Debug");
+        info!("Info");
+        warn!(target: "Database", "Warn");
+        error!("Error");
+    }
 }
