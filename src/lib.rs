@@ -6,6 +6,12 @@ mod logger;
 #[cfg(feature = "logger")]
 pub use logger::OsLogger;
 
+#[cfg(feature = "logger")]
+pub use logger::init_once;
+
+#[cfg(feature = "logger")]
+pub use logger::Config;
+
 use crate::sys::*;
 use std::ffi::{c_void, CString};
 
